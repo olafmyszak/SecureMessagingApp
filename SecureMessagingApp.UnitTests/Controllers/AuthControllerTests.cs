@@ -10,7 +10,7 @@ namespace SecureMessagingApp.UnitTests.Controllers;
 
 [TestFixture]
 [TestOf(typeof(AuthController))]
-public class AuthControllerTests
+internal class AuthControllerTests
 {
     private Mock<UserManager<User>> _userManagerMock;
     private Mock<ITokenService> _tokenServiceMock;

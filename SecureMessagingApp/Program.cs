@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SecureMessagingApp.Extensions;
 using SecureMessagingApp.Models;
 using SecureMessagingApp.Services;
 
@@ -58,6 +59,17 @@ public class Program
 
         WebApplication app = builder.Build();
 
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.MapOpenApi();
+
+            app.UseOpenApi();
+            app.UseSwaggerUi();
+
+            app.ApplyMigrations();
+        }
+
         // Warm up critical services
         using (IServiceScope scope = app.Services.CreateScope())
         {
@@ -71,15 +83,6 @@ public class Program
             // Warm up other services (e.g., JWT validation)
             var jwtBearerOptions = services.GetRequiredService<IOptions<JwtBearerOptions>>();
             _ = jwtBearerOptions.Value.TokenValidationParameters;
-        }
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-
-            app.UseOpenApi();
-            app.UseSwaggerUi();
         }
 
         // app.UseHttpsRedirection();

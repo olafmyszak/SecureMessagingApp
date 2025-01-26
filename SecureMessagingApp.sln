@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecureMessagingApp", "Secur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecureMessagingApp.UnitTests", "SecureMessagingApp.UnitTests\SecureMessagingApp.UnitTests.csproj", "{44A97D05-5275-47BA-9966-6A3EDBBC17B8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SecureMessagingApp.IntegrationTests", "SecureMessagingApp.IntegrationTests\SecureMessagingApp.IntegrationTests.csproj", "{1989A3F4-7CDB-452E-AF52-D1861E81BF52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{44A97D05-5275-47BA-9966-6A3EDBBC17B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44A97D05-5275-47BA-9966-6A3EDBBC17B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44A97D05-5275-47BA-9966-6A3EDBBC17B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1989A3F4-7CDB-452E-AF52-D1861E81BF52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1989A3F4-7CDB-452E-AF52-D1861E81BF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1989A3F4-7CDB-452E-AF52-D1861E81BF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1989A3F4-7CDB-452E-AF52-D1861E81BF52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

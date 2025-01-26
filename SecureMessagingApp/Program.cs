@@ -2,8 +2,10 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SecureMessagingApp.Models;
+using SecureMessagingApp.Services;
 
 namespace SecureMessagingApp;
 
@@ -15,7 +17,6 @@ public class Program
 
         builder.Services.AddControllers();
         builder.Services.AddOpenApiDocument();
-        // Add services to the container.
         builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
             {
                 options.User.RequireUniqueEmail = false;
@@ -49,11 +50,28 @@ public class Program
             };
         });
 
+        builder.Services.AddScoped<ITokenService, TokenService>();
+
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddOpenApi();
 
         WebApplication app = builder.Build();
+
+        // Warm up critical services
+        using (IServiceScope scope = app.Services.CreateScope())
+        {
+            IServiceProvider services = scope.ServiceProvider;
+
+            // Warm up the database connection and model
+            var db = services.GetRequiredService<AppDbContext>();
+            db.Database.OpenConnection();
+            _ = db.Users.Any(); // Force model compilation
+
+            // Warm up other services (e.g., JWT validation)
+            var jwtBearerOptions = services.GetRequiredService<IOptions<JwtBearerOptions>>();
+            _ = jwtBearerOptions.Value.TokenValidationParameters;
+        }
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())

@@ -52,4 +52,17 @@ public class AuthController(UserManager<User> userManager, ITokenService tokenSe
         string token = tokenService.GenerateJwtToken(user);
         return Ok(token);
     }
+
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<string>> GetPublicKey(int id)
+    {
+        User? user = await userManager.FindByIdAsync(id.ToString());
+
+        if (user == null)
+        {
+            return NotFound($"User id: {id} not found.");
+        }
+
+        return Ok(user.PublicKey);
+    }
 }

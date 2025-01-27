@@ -173,6 +173,47 @@ internal class AuthControllerTests
         Assert.That(actual, Is.EqualTo(expected));
     }
 
+    [Test]
+    public async Task GetPublicKey_ValidId_ReturnsOKWithPublicKey()
+    {
+        // Arrange
+        const int id = 1;
+        const string key = "fdudfgjdfogjdfiogjdfiogj";
+
+        _userManagerMock.Setup(x => x.FindByIdAsync(id.ToString())).ReturnsAsync(new User { Id = id, PublicKey = key });
+
+        // Act
+        ActionResult<string> actionResult = await _authController.GetPublicKey(id);
+
+        //Assert
+        var okObjectResult = actionResult.Result as OkObjectResult;
+        Assert.That(okObjectResult, Is.Not.Null);
+
+        string? actual = okObjectResult.Value as string;
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo(key));
+    }
+
+    [Test]
+    public async Task GetPublicKey_InvalidId_ReturnsNotFoundObjectResult()
+    {
+        // Arrange
+        const int id = -1;
+
+        _userManagerMock.Setup(x => x.FindByIdAsync(id.ToString())).ReturnsAsync(null as User);
+
+        // Act
+        ActionResult<string> actionResult = await _authController.GetPublicKey(id);
+
+        //Assert
+        var notFoundObjectResult = actionResult.Result as NotFoundObjectResult;
+        Assert.That(notFoundObjectResult, Is.Not.Null);
+
+        string? actual = notFoundObjectResult.Value as string;
+        Assert.That(actual, Is.Not.Null);
+        Assert.That(actual, Is.EqualTo($"User id: {id} not found."));
+    }
+
     private static Mock<UserManager<TUser>> MockUserManager<TUser>(List<TUser> ls) where TUser : class
     {
         var store = new Mock<IUserStore<TUser>>();

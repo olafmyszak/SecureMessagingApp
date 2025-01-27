@@ -42,7 +42,7 @@ public class AuthTests(SecureMessagingAppFactory factory) : BaseIntegrationTest(
 
         Assert.NotNull(userInDb);
         Assert.Equal(testUser.UserName, userInDb.UserName);
-        Assert.NotNull(userInDb.PasswordHash); // Ensure password was hashed
+        Assert.NotNull(userInDb.PasswordHash);
     }
 
     [Fact]

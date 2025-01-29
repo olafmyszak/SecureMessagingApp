@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SecureMessagingApp.Extensions;
+using SecureMessagingApp.Hubs;
 using SecureMessagingApp.Models;
 using SecureMessagingApp.Services;
 
@@ -30,6 +31,8 @@ public class Program
             })
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
+
+        builder.Services.AddSignalR(options => { options.EnableDetailedErrors = true; });
 
         builder.Services.AddDbContextPool<AppDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -57,7 +60,11 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddOpenApi();
 
+
         WebApplication app = builder.Build();
+
+        // app.UseResponseCompression();
+
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -87,10 +94,12 @@ public class Program
 
         // app.UseHttpsRedirection();
 
+
         app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();
+        app.MapHub<ChatHub>("chat-hub");
 
         app.Run();
     }

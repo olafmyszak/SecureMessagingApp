@@ -8,6 +8,7 @@ using SecureMessagingApp.Extensions;
 using SecureMessagingApp.Hubs;
 using SecureMessagingApp.Models;
 using SecureMessagingApp.Services;
+using SecureMessagingApp.Shared;
 
 namespace SecureMessagingApp;
 
@@ -15,7 +16,19 @@ public class Program
 {
     public static void Main(string[] args)
     {
+        const string myAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: myAllowSpecificOrigins,
+                policy =>
+                {
+                    policy.WithOrigins("http://localhost:4200")
+                        .AllowAnyHeader();
+                });
+        });
 
         builder.Services.AddControllers();
         builder.Services.AddOpenApiDocument();
@@ -94,12 +107,13 @@ public class Program
 
         // app.UseHttpsRedirection();
 
+        app.UseCors(myAllowSpecificOrigins);
 
         app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();
-        app.MapHub<ChatHub>("chat-hub");
+        app.MapHub<ChatHub>(HubRoutes.ChatHub);
 
         app.Run();
     }

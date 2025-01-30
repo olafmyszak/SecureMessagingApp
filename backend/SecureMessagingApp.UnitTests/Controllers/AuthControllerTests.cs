@@ -93,30 +93,31 @@ internal class AuthControllerTests
     }
 
     [Test]
-    public async Task Login_ValidCredentials_ReturnsOkWithToken()
+    public async Task Login_ValidCredentials_ReturnsOkWithJwtResponse()
     {
         // Arrange
         var dto = new UserLoginDto { UserName = "user", Password = "password" };
         var user = new User();
-        const string expected = "jwtToken";
+        const string token = "jwtToken";
+        var expected = new JwtResponse { AccessToken = token };
 
         _userManagerMock.Setup(x => x.FindByNameAsync(dto.UserName))
             .ReturnsAsync(user);
         _userManagerMock.Setup(x => x.CheckPasswordAsync(user, dto.Password))
             .ReturnsAsync(true);
         _tokenServiceMock.Setup(x => x.GenerateJwtToken(user))
-            .Returns(expected);
+            .Returns(token);
 
         // Act
-        ActionResult<string> actionResult = await _authController.Login(dto);
+        ActionResult<JwtResponse> actionResult = await _authController.Login(dto);
 
         // Assert
         var okObjectResult = actionResult.Result as OkObjectResult;
         Assert.That(okObjectResult, Is.Not.Null);
 
-        string? actual = okObjectResult.Value as string;
+        var actual = okObjectResult.Value as JwtResponse;
         Assert.That(actual, Is.Not.Null);
-        Assert.That(actual, Is.EqualTo(expected));
+        Assert.That(actual.AccessToken, Is.EqualTo(expected.AccessToken));
     }
 
     [Test]
@@ -135,7 +136,7 @@ internal class AuthControllerTests
             .Returns(expected);
 
         // Act
-        ActionResult<string> actionResult = await _authController.Login(dto);
+       ActionResult<JwtResponse> actionResult = await _authController.Login(dto);
 
         // Assert
         var unauthorizedObjectResult = actionResult.Result as UnauthorizedObjectResult;
@@ -162,7 +163,7 @@ internal class AuthControllerTests
             .Returns(expected);
 
         // Act
-        ActionResult<string> actionResult = await _authController.Login(dto);
+        ActionResult<JwtResponse> actionResult = await _authController.Login(dto);
 
         // Assert
         var unauthorizedObjectResult = actionResult.Result as UnauthorizedObjectResult;
@@ -223,7 +224,7 @@ internal class AuthControllerTests
 
         mgr.Setup(x => x.DeleteAsync(It.IsAny<TUser>())).ReturnsAsync(IdentityResult.Success);
         mgr.Setup(x => x.CreateAsync(It.IsAny<TUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success)
-            .Callback<TUser, string>((x, y) => ls.Add(x));
+            .Callback<TUser, string>((x, _) => ls.Add(x));
         mgr.Setup(x => x.UpdateAsync(It.IsAny<TUser>())).ReturnsAsync(IdentityResult.Success);
 
         return mgr;

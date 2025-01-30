@@ -36,7 +36,7 @@ public class AuthController(UserManager<User> userManager, ITokenService tokenSe
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<string>> Login(UserLoginDto dto)
+    public async Task<ActionResult<JwtResponse>> Login(UserLoginDto dto)
     {
         User? user = await userManager.FindByNameAsync(dto.UserName);
 
@@ -53,7 +53,9 @@ public class AuthController(UserManager<User> userManager, ITokenService tokenSe
         }
 
         string token = tokenService.GenerateJwtToken(user);
-        return Ok(token);
+        var response = new JwtResponse { AccessToken = token };
+
+        return Ok(response);
     }
 
     [HttpGet("{id:int}")]

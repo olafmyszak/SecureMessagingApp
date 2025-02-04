@@ -1,0 +1,7 @@
+<div class="user-list">
+    <div *ngFor="let user of users"
+         class="user-item"
+         (click)="selectUser(user.id)">
+        {{ user.userName }}
+    </div>
+</div>

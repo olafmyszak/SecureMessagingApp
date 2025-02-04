@@ -15,7 +15,7 @@ namespace SecureMessagingApp.Migrations
                 table: "Users");
 
             migrationBuilder.RenameColumn(
-                name: "Username",
+                name: "UserName",
                 table: "Users",
                 newName: "UserName");
 
@@ -34,10 +34,10 @@ namespace SecureMessagingApp.Migrations
             migrationBuilder.RenameColumn(
                 name: "UserName",
                 table: "Users",
-                newName: "Username");
+                newName: "UserName");
 
             migrationBuilder.AlterColumn<string>(
-                name: "Username",
+                name: "UserName",
                 table: "Users",
                 type: "text",
                 nullable: false,

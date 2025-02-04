@@ -5,5 +5,7 @@ namespace SecureMessagingApp.Hubs;
 public interface IChatClient
 {
     Task ReceiveMessage(Message message);
-    Task SendMessage(string encryptedContent, int recipientId);
+    Task SendMessage(int recipientId, string encryptedContent);
+    Task JoinConversation(int recipientId);
+    Task LeaveConversation(int recipientId);
 }

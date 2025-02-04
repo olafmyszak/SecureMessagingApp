@@ -10,31 +10,6 @@ namespace SecureMessagingApp.Controllers;
 [Route("api/[controller]")]
 public class AuthController(UserManager<User> userManager, ITokenService tokenService) : ControllerBase
 {
-    [HttpPost("register")]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<User>> Register(UserRegistrationDto dto)
-    {
-        if (await userManager.FindByNameAsync(dto.UserName) != null)
-        {
-            return Conflict("Username already exists.");
-        }
-
-        var user = new User
-        {
-            UserName = dto.UserName, PublicKey = $"placeholder_key_{dto.UserName}"
-        }; //TODO: Client side public key generation
-        IdentityResult result = await userManager.CreateAsync(user, dto.Password);
-
-        if (!result.Succeeded)
-        {
-            return BadRequest(result.Errors);
-        }
-
-        return Created();
-    }
-
     [HttpPost("login")]
     public async Task<ActionResult<JwtResponse>> Login(UserLoginDto dto)
     {

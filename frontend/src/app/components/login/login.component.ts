@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
 import { catchError, EMPTY } from 'rxjs';
 import { HttpStatusCode } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-login',
@@ -14,16 +15,17 @@ import { HttpStatusCode } from '@angular/common/http';
     styleUrl: './login.component.css'
 })
 export class LoginComponent {
-    signInForm = new FormGroup({
+    form = new FormGroup({
         username: new FormControl('', [Validators.required]),
         password: new FormControl('', [Validators.required])
     });
 
-    snackBar = inject(MatSnackBar);
-    authService = inject(AuthService);
+    private readonly snackBar = inject(MatSnackBar);
+    private readonly authService = inject(AuthService);
+    private readonly router = inject(Router);
 
     onSubmit() {
-        const val = this.signInForm.value;
+        const val = this.form.value;
 
         if (val.username && val.password) {
             // console.log(val)
@@ -37,7 +39,10 @@ export class LoginComponent {
 
                     return EMPTY;
                 })
-            ).subscribe();
+            ).subscribe({
+                    next: () => void this.router.navigate(['/chat'])
+                }
+            );
         }
     }
 

@@ -1,0 +1,32 @@
+<div class="chat-component">
+    <div class="connection-status"
+         [class.connected]="connectionState() === HubConnectionState.Connected"
+         [class.disconnected]="connectionState() === HubConnectionState.Disconnected">
+        {{ connectionState() | titlecase }}
+    </div>
+
+    <div class="chat-container">
+        <app-user-list (selectedUser)="selectUser($event)"></app-user-list>
+
+        <div class="message-list">
+            <div *ngFor="let message of messages()"
+                 class="message"
+                 [class.sent]="message.senderId === selectedUserId">
+                <div class="message-content">
+                    <p>{{ message.encryptedContent }}</p>
+                    <small>{{ message.timestamp | date:'shortTime' }}</small>
+                </div>
+            </div>
+
+            <div class="message-input">
+                <textarea [(ngModel)]="newMessage"
+                          placeholder="Type your message..."
+                          (keyup.enter)="sendMessage()"></textarea>
+                <button (click)="sendMessage()" [disabled]="!newMessage.trim()">
+                    Send
+                </button>
+            </div>
+        </div>
+
+    </div>
+</div>

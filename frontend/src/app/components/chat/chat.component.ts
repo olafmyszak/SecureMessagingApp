@@ -48,7 +48,6 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     selectUser(id: number) {
         this.selectedUserId = id;
-        console.log(this.selectedUserId);
     }
 
     ngOnDestroy(): void {

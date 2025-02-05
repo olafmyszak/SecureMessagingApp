@@ -40,7 +40,9 @@ export class AuthService {
             return false;
         }
 
-        return !jwtHelperService.isTokenExpired(token);
+        const b = !jwtHelperService.isTokenExpired(token);
+        console.log(b);
+        return b;
     }
 
     get currentUserId(): number | null {

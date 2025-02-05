@@ -8,13 +8,15 @@
     <div class="chat-container">
         <app-user-list (selectedUser)="selectUser($event)"></app-user-list>
 
-        <div class="message-list">
-            <div *ngFor="let message of messages()"
-                 class="message"
-                 [class.sent]="message.senderId === selectedUserId">
-                <div class="message-content">
-                    <p>{{ message.encryptedContent }}</p>
-                    <small>{{ message.timestamp | date:'shortTime' }}</small>
+        <div style="display: flex; flex-direction: column">
+            <div class="message-list">
+                <div *ngFor="let message of messages()"
+                     class="message"
+                     [class.sent]="message.senderId === selectedUserId">
+                    <div class="message-content">
+                        <p>{{ message.encryptedContent }}</p>
+                        <small>{{ message.timestamp | date:'shortTime' }}</small>
+                    </div>
                 </div>
             </div>
 

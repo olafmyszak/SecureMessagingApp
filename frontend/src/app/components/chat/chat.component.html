@@ -1,34 +1,36 @@
 <div class="chat-component">
-    <div class="connection-status"
-         [class.connected]="connectionState() === HubConnectionState.Connected"
-         [class.disconnected]="connectionState() === HubConnectionState.Disconnected">
+    <h3 class="connection-status"
+        [class.connected]="connectionState() === HubConnectionState.Connected"
+        [class.disconnected]="connectionState() === HubConnectionState.Disconnected"
+        [class.connecting]="connectionState() === HubConnectionState.Connecting || connectionState() === HubConnectionState.Reconnecting">
         {{ connectionState() | titlecase }}
-    </div>
+    </h3>
 
     <div class="chat-container">
         <app-user-list (selectedUser)="selectUser($event)"></app-user-list>
 
-        <div style="display: flex; flex-direction: column">
+        <div style="display: flex; flex-direction: column; margin-left: 1rem">
+            @if (selectedUser) {
+                <p style="text-align: center; margin: 0 0 1rem 0"> Chat with {{ selectedUser.userName }}</p>
+            }
             <div class="message-list">
-                <div *ngFor="let message of messages()"
-                     class="message"
-                     [class.sent]="message.senderId === selectedUserId">
-                    <div class="message-content">
-                        <p>{{ message.encryptedContent }}</p>
-                        <small>{{ message.timestamp | date:'shortTime' }}</small>
+                @for (message of messages(); track message.id) {
+                    <div class="message" [ngClass]="{'sent': isSent(message), 'received': !isSent(message)}">
+                        <div class="message-content">
+                            <p>{{ message.encryptedContent }}</p>
+                            <small>{{ message.timestamp | date:'shortTime' }}</small>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
-
             <div class="message-input">
                 <textarea [(ngModel)]="newMessage"
                           placeholder="Type your message..."
                           (keyup.enter)="sendMessage()"></textarea>
-                <button (click)="sendMessage()" [disabled]="!newMessage.trim()">
+                <button (click)="sendMessage()" [disabled]="!newMessage().trim() || selectedUser == null">
                     Send
                 </button>
             </div>
         </div>
-
     </div>
 </div>

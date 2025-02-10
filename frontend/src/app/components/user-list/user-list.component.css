@@ -1,4 +1,4 @@
 .user-list {
-    margin-right: 10px;
-    margin-left: 10px;
+    border-radius: 0;
+    border: none;
 }

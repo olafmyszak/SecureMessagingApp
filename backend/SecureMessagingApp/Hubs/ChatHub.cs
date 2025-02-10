@@ -40,7 +40,11 @@ public sealed class ChatHub(AppDbContext context) : Hub<IChatClient>
         context.Messages.Add(message);
         await context.SaveChangesAsync();
 
+        // Send to recipient
         await Clients.User(recipientId.ToString()).ReceiveMessage(message);
+
+        // Send to sender (
+        await Clients.User(senderId.ToString()).ReceiveMessage(message);
     }
 
     public async Task JoinConversation(int recipientId)

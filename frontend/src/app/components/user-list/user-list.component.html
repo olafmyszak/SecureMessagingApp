@@ -1,7 +1,10 @@
-<div class="user-list">
-    <div *ngFor="let user of users"
-         class="user-item"
-         (click)="selectUser(user.id)">
-        {{ user.userName }}
-    </div>
-</div>
+<mat-button-toggle-group
+        class="user-list"
+        [hideSingleSelectionIndicator]=true
+        vertical>
+    @for (user of users; track user.id) {
+        <mat-button-toggle style="border: none" (click)="selectUser(user)">
+            {{ user.userName }}
+        </mat-button-toggle>
+    }
+</mat-button-toggle-group>

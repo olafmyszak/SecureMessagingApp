@@ -1,0 +1,40 @@
+<div>
+    <nav>
+        <a class="button"
+           routerLink=""
+           routerLinkActive="activeButton"
+           [routerLinkActiveOptions]="{ exact: true }"
+           ariaCurrentWhenActive="page">
+            Home
+        </a>
+        @if (authService.isAuthenticated) {
+            <a class="button"
+               (click)="logout()"
+               routerLink="">
+                Logout
+            </a>
+
+            <a class="button"
+               routerLink="/chat"
+               routerLinkActive="activeButton"
+               ariaCurrentWhenActive="page">
+                Chat
+            </a>
+        } @else {
+            <a class="button"
+               routerLink="/login"
+               routerLinkActive="activeButton"
+               ariaCurrentWhenActive="page">
+                Login
+            </a>
+            <a class="button"
+               routerLink="/register"
+               routerLinkActive="activeButton"
+               ariaCurrentWhenActive="page">
+                Register
+            </a>
+        }
+    </nav>
+
+    <router-outlet></router-outlet>
+</div>

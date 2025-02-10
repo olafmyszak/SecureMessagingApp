@@ -9,6 +9,6 @@ export function passwordMatchValidator(): ValidatorFn {
             return null;
         }
 
-        return { mismatch: true };
+        return {mismatch: true};
     };
 }

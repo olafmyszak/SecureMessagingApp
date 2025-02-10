@@ -91,7 +91,7 @@ export class SignalRService {
     }
 
     private async sleep(ms: number) {
-        await new Promise( resolve => setTimeout(resolve, ms) );
+        await new Promise(resolve => setTimeout(resolve, ms));
     }
 
 }

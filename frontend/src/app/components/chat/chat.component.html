@@ -1,8 +1,8 @@
 <div class="chat-component">
-    <h3 class="connection-status"
-        [class.connected]="connectionState() === HubConnectionState.Connected"
+    <h3 [class.connected]="connectionState() === HubConnectionState.Connected"
+        [class.connecting]="connectionState() === HubConnectionState.Connecting || connectionState() === HubConnectionState.Reconnecting"
         [class.disconnected]="connectionState() === HubConnectionState.Disconnected"
-        [class.connecting]="connectionState() === HubConnectionState.Connecting || connectionState() === HubConnectionState.Reconnecting">
+        class="connection-status">
         {{ connectionState() | titlecase }}
     </h3>
 
@@ -24,9 +24,9 @@
                 }
             </div>
             <div class="message-input">
-                <textarea [(ngModel)]="newMessage"
-                          placeholder="Type your message..."
-                          (keyup.enter)="sendMessage()"></textarea>
+                <textarea (keyup.enter)="sendMessage()"
+                          [(ngModel)]="newMessage"
+                          placeholder="Type your message..."></textarea>
                 <button (click)="sendMessage()" [disabled]="!newMessage().trim() || selectedUser == null">
                     Send
                 </button>

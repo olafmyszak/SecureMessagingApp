@@ -45,40 +45,6 @@ export class CryptoService {
         );
     }
 
-    private arrayBufferToBase64(buffer: ArrayBuffer): string {
-        return btoa(String.fromCharCode(...new Uint8Array(buffer)));
-    }
-
-    private base64ToArrayBuffer(base64: string): ArrayBuffer {
-        const binaryString = atob(base64);
-        const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-            bytes[i] = binaryString.charCodeAt(i);
-        }
-        return bytes.buffer;
-    }
-
-    private async initDb(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            const request = indexedDB.open(this.DB_NAME, 1);
-
-            request.onerror = () => reject(request.error);
-
-            request.onsuccess = () => {
-                this.db = request.result;
-                resolve();
-            };
-
-            request.onupgradeneeded = (event) => {
-                const db = (event.target as IDBOpenDBRequest).result;
-
-                if (!db.objectStoreNames.contains(this.STORE_NAME)) {
-                    db.createObjectStore(this.STORE_NAME);
-                }
-            };
-        });
-    }
-
     async storePrivateKey(privateKey: CryptoKey): Promise<void> {
         if (!this.db) {
             await this.initDb();
@@ -115,6 +81,40 @@ export class CryptoService {
                     return;
                 }
                 resolve(request.result);
+            };
+        });
+    }
+
+    private arrayBufferToBase64(buffer: ArrayBuffer): string {
+        return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+    }
+
+    private base64ToArrayBuffer(base64: string): ArrayBuffer {
+        const binaryString = atob(base64);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+    private async initDb(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(this.DB_NAME, 1);
+
+            request.onerror = () => reject(request.error);
+
+            request.onsuccess = () => {
+                this.db = request.result;
+                resolve();
+            };
+
+            request.onupgradeneeded = (event) => {
+                const db = (event.target as IDBOpenDBRequest).result;
+
+                if (!db.objectStoreNames.contains(this.STORE_NAME)) {
+                    db.createObjectStore(this.STORE_NAME);
+                }
             };
         });
     }

@@ -3,20 +3,20 @@
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
         <label for="user-name">Username:</label>
         <input formControlName="username" id="user-name" type="text"/>
-        <div class="error" *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
+        <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched" class="error">
             <span *ngIf="form.get('username')?.errors?.['required']">Username is required.</span>
         </div>
 
         <label for="password">Password:</label>
         <input formControlName="password" id="password" type="password"/>
-        <div class="error" *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+        <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="error">
             <span *ngIf="form.get('password')?.errors?.['required']">Password is required.</span>
             <span *ngIf="form.get('password')?.errors?.['minlength']">Password must be at least 8 characters.</span>
         </div>
 
         <label for="confirmPassword">Confirm password:</label>
         <input formControlName="confirmPassword" id="confirmPassword" type="password"/>
-        <div class="error" *ngIf="form.errors?.['mismatch'] && form.get('confirmPassword')?.touched">
+        <div *ngIf="form.errors?.['mismatch'] && form.get('confirmPassword')?.touched" class="error">
             <span>Passwords must match.</span>
         </div>
 

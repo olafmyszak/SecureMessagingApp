@@ -1,10 +1,10 @@
 <div>
     <nav>
-        <a class="button"
+        <a [routerLinkActiveOptions]="{ exact: true }"
+           ariaCurrentWhenActive="page"
+           class="button"
            routerLink=""
-           routerLinkActive="activeButton"
-           [routerLinkActiveOptions]="{ exact: true }"
-           ariaCurrentWhenActive="page">
+           routerLinkActive="activeButton">
             Home
         </a>
         @if (authService.isAuthenticated) {

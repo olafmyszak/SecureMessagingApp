@@ -23,15 +23,14 @@ import { AuthService } from '../../services/auth.service';
     styleUrl: './chat.component.css'
 })
 export class ChatComponent implements OnInit, OnDestroy {
-    private readonly signalRService = inject(SignalRService);
-    private readonly chatService = inject(ChatService);
-    protected readonly authService = inject(AuthService);
-
     selectedUser: UserIdWithUsernameDto | null = null;
-
     newMessage = signal('');
-    messages: Signal<Message[]> = toSignal(this.chatService.messages$, {initialValue: []});
+    protected readonly authService = inject(AuthService);
+    protected readonly HubConnectionState = HubConnectionState;
+    private readonly signalRService = inject(SignalRService);
     connectionState: Signal<HubConnectionState> = toSignal(this.signalRService.connectionState$, {initialValue: HubConnectionState.Disconnected});
+    private readonly chatService = inject(ChatService);
+    messages: Signal<Message[]> = toSignal(this.chatService.messages$, {initialValue: []});
 
     ngOnInit(): void {
         void this.signalRService.startConnection();
@@ -63,6 +62,4 @@ export class ChatComponent implements OnInit, OnDestroy {
     protected isSent(message: Message) {
         return message.senderId === this.authService.currentUserId;
     }
-
-    protected readonly HubConnectionState = HubConnectionState;
 }

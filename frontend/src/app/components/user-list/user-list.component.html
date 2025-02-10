@@ -1,6 +1,6 @@
 <mat-button-toggle-group
-        class="user-list"
         [hideSingleSelectionIndicator]=true
+        class="user-list"
         vertical>
     @for (user of users; track user.id) {
         <mat-button-toggle style="border: none" (click)="selectUser(user)">

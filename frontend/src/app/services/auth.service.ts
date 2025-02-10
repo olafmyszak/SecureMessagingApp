@@ -15,24 +15,6 @@ const jwtHelperService = new JwtHelperService();
 export class AuthService {
     private readonly http = inject(HttpClient);
 
-    login(signInDto: SignInDto): Observable<JwtResponse> {
-        return this.http.post<JwtResponse>(`${environment.baseUrlHttps}/api/auth/login`, signInDto).pipe(
-            tap({
-                next: res => {
-                    localStorage.setItem(environment.access_token, res.accessToken);
-                },
-                error: err => {
-                    console.error(err);
-                    console.error(`Login failed: ${err.message}`);
-                }
-            })
-        );
-    }
-
-    logout() {
-        localStorage.removeItem(environment.access_token);
-    }
-
     get isAuthenticated(): boolean {
         const token = localStorage.getItem(environment.access_token);
 
@@ -64,5 +46,23 @@ export class AuthService {
         }
 
         return +id;
+    }
+
+    login(signInDto: SignInDto): Observable<JwtResponse> {
+        return this.http.post<JwtResponse>(`${environment.baseUrlHttps}/api/auth/login`, signInDto).pipe(
+            tap({
+                next: res => {
+                    localStorage.setItem(environment.access_token, res.accessToken);
+                },
+                error: err => {
+                    console.error(err);
+                    console.error(`Login failed: ${err.message}`);
+                }
+            })
+        );
+    }
+
+    logout() {
+        localStorage.removeItem(environment.access_token);
     }
 }

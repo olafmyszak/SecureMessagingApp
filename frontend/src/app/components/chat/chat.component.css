@@ -5,11 +5,6 @@
     flex-direction: column;
 }
 
-.user-list-container {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
 .chat-container {
     border: 1px solid #ccc;
     border-radius: 8px;

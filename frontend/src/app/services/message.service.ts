@@ -10,7 +10,7 @@ import { AuthService } from './auth.service';
 })
 export class MessageService {
     private readonly http = inject(HttpClient);
-    private readonly authService = inject(AuthService)
+    private readonly authService = inject(AuthService);
 
     getAllMessages(recipientId: number): Observable<Message[]> {
         return this.http.get<Message[]>(`${environment.baseUrlHttps}/api/message/history/${recipientId}`).pipe(

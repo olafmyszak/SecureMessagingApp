@@ -15,10 +15,9 @@ import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-
 })
 export class UserListComponent implements OnInit {
     selectedUser = output<UserIdWithUsernameDto>();
-
+    users: UserIdWithUsernameDto[] = [];
     private readonly userService = inject(UserService);
     private readonly authService = inject(AuthService);
-    users: UserIdWithUsernameDto[] = [];
 
     ngOnInit(): void {
         const currentUserId = this.authService.currentUserId;
